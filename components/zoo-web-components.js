@@ -1363,8 +1363,6 @@ var zooWebComponents = (function (exports) {
 	exports.ZooGrid = ZooGrid;
 	exports.registerComponents = registerComponents;
 
-	Object.defineProperty(exports, '__esModule', { value: true });
-
 	return exports;
 
 })({});
