@@ -32,6 +32,11 @@ main {
 	max-width: 1280px;
 }
 
+.form-content h3 {
+	grid-column: 1 / -1;
+	text-align: left;
+}
+
 h2 {
 	color: var(--primary-mid);
 }
@@ -58,6 +63,7 @@ hr {
 
 .buttons .icon-btn {
 	width: max-content;
+	min-width: 45px;
 }
 
 .icon-btn button svg {
@@ -101,6 +107,10 @@ zoo-grid {
 	min-width: 1024px;
 }
 
+zoo-grid-row {
+	--grid-row-content-height: 150px;
+}
+
 .grid-holder {
 	max-width: 1280px;
 	overflow: auto;
@@ -119,4 +129,40 @@ zoo-input zoo-button button {
 
 #input-composition {
 	border-radius: 5px 0 0 5px;
+}
+
+.button-group {
+	display: flex;
+	justify-content: center;
+}
+
+.grid-footer-content {
+	display: flex;
+	align-items: center;
+}
+
+.grid-footer-content zoo-button {
+	margin-right: 10px;
+}
+
+.filter-row zoo-input input,
+.filter-row zoo-select select {
+	padding: 0 5px;
+	height: 25px;
+}
+
+.filter-row > *:not(button) {
+	padding-right: 5px;
+}
+
+.filter-row input[type="date"]::-webkit-calendar-picker-indicator {
+	margin: 0;
+}
+
+zoo-navigation {
+	overflow-y: hidden;
+}
+
+zoo-input-tag-option {
+	display: none;
 }

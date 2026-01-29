@@ -20,31 +20,31 @@ const changeTheme = pallete => {
 	activeBtn.setAttribute('type', 'secondary');
 	prevActiveBtn = activeBtn;
 	switch (pallete) {
-	case 'zoo':
-		setColorVar('--primary-mid', '#3C9700');
-		setColorVar('--primary-light', '#66B100');
-		setColorVar('--primary-dark', '#286400');
-		setColorVar('--primary-ultralight', '#EBF4E5');
-		setColorVar('--secondary-mid', '#FF6200');
-		setColorVar('--secondary-light', '#FF8800');
-		setColorVar('--secondary-dark', '#CC4E00');
-		setColorVar('--info-ultralight', '#ECF5FA');
-		setColorVar('--info-mid', '#459FD0');
-		break;
-	case 'grey':
-		setColorVar('--primary-mid', '#676778');
-		setColorVar('--primary-light', '#838399');
-		setColorVar('--primary-dark', '#565664');
-		setColorVar('--primary-ultralight', '#d3d3e1');
-		setColorVar('--secondary-mid', '#ff3e00');
-		setColorVar('--secondary-light', '#fb7044');
-		setColorVar('--secondary-dark', '#c53100');
-		setColorVar('--info-ultralight', '#d8eefd');
-		setColorVar('--info-mid', '#40b3ff');
-		break;
-	default:
-		generateRandomTheme();
-		break;
+		case 'zoo':
+			setColorVar('--primary-mid', '#3C9700');
+			setColorVar('--primary-light', '#66B100');
+			setColorVar('--primary-dark', '#286400');
+			setColorVar('--primary-ultralight', '#EBF4E5');
+			setColorVar('--secondary-mid', '#FF6200');
+			setColorVar('--secondary-light', '#FF8800');
+			setColorVar('--secondary-dark', '#CC4E00');
+			setColorVar('--info-ultralight', '#ECF5FA');
+			setColorVar('--info-mid', '#459FD0');
+			break;
+		case 'grey':
+			setColorVar('--primary-mid', '#676778');
+			setColorVar('--primary-light', '#838399');
+			setColorVar('--primary-dark', '#565664');
+			setColorVar('--primary-ultralight', '#d3d3e1');
+			setColorVar('--secondary-mid', '#ff3e00');
+			setColorVar('--secondary-light', '#fb7044');
+			setColorVar('--secondary-dark', '#c53100');
+			setColorVar('--info-ultralight', '#d8eefd');
+			setColorVar('--info-mid', '#40b3ff');
+			break;
+		default:
+			generateRandomTheme();
+			break;
 	}
 };
 
@@ -167,14 +167,9 @@ const getRow = (d, i, template, idx) => {
 	row.appendChild(createdDate);
 
 	// status
-	const selectTmpl = document.querySelector('#status-select').content.cloneNode(true);
-	const select = selectTmpl.querySelector('select');
-	select.setAttribute('id', `${num}-select`);
-	selectTmpl.querySelector('label').setAttribute('for', `${num}-select`);
-	if (d.status !== 'DELIVERED') {
-		select.setAttribute('disabled', '');
-	}
-	row.appendChild(selectTmpl);
+	const spanForStatus = document.createElement('span');
+	spanForStatus.textContent = d.status;
+	row.appendChild(spanForStatus);
 
 	// max weight
 	const maxWeight = document.createElement('div');
@@ -202,13 +197,15 @@ const getRow = (d, i, template, idx) => {
 const grids = document.querySelectorAll('zoo-grid');
 let idx = 0;
 for (const grid of grids) {
-	data.forEach((d, i) => {
-		const simpleRow = document.querySelector('#simple-row').content;
-		const clone = getRow(d, i, simpleRow, idx * data.length);
-		grid.appendChild(clone);
-	});
-	if (idx == 0) grid.setAttribute('resizable', true);
-	idx += 1;
+	if (idx !== 2) {
+		data.forEach((d, i) => {
+			const simpleRow = document.querySelector('#simple-row').content;
+			const clone = getRow(d, i, simpleRow, idx * data.length);
+			grid.appendChild(clone);
+		});
+		if (idx == 0) grid.setAttribute('resizable', true);
+		idx += 1;
+	}
 }
 
 document.querySelector('form').addEventListener('submit', e => {
@@ -227,4 +224,56 @@ document.querySelector('form').addEventListener('submit', e => {
 	document.body.appendChild(toast);
 	toast.show();
 	setTimeout(() => toast.remove(), 3150);
+});
+
+const handleExpandAction = (buttonSelector, contentSelector) => {
+	document.querySelector(buttonSelector).onclick = () => {
+		const rowContent = document.querySelector(contentSelector);
+		if (rowContent.hasAttribute('expanded')) {
+			rowContent.removeAttribute('expanded');
+		} else {
+			rowContent.setAttribute('expanded', '');
+		}
+	};
+};
+
+handleExpandAction('#row-1-actions .expander', '#row-1-content');
+handleExpandAction('#row-2-actions .expander', '#row-2-content');
+handleExpandAction('#row-3-actions .expander', '#row-3-content');
+
+const tagInfos = ['dog', 'cat', 'bird', 'aquatic', 'reptile'];
+const inputTag = document.querySelector('zoo-input-tag');
+document.getElementById('input-tag').addEventListener('input', e => {
+	inputTag.querySelectorAll('zoo-input-tag-option').forEach(o => o.style.display = 'none');
+	const noResultsSpan = inputTag.querySelector('*[slot="no-results"]');
+	if (noResultsSpan) noResultsSpan.style.display = 'none';
+	const val = e.target.value;
+	if (!val) return;
+	const matchedTags = tagInfos.filter(i => i.toLowerCase().indexOf(val.toLowerCase()) > -1);
+	if (matchedTags && matchedTags.length > 0) {
+		matchedTags.forEach(m => {
+			document.getElementById(`${m}-tag`).style.display = 'flex';
+		});
+	} else {
+		noResultsSpan.style.display = 'flex';
+	}
+});
+
+const customTagInput = document.getElementById('input-tag-custom-input');
+document.getElementById('input-tag-custom').addEventListener('input', e => {
+	customTagInput.querySelectorAll('zoo-input-tag-option').forEach(o => o.style.display = 'none');
+	const noResultsSpan = document.getElementById('input-tag-custom').querySelector('*[slot="no-results"]');
+	if (noResultsSpan) noResultsSpan.style.display = 'none';
+	const val = e.target.value;
+	if (!val) return;
+	const matchedTags = tagInfos.filter(i => i.toLowerCase().indexOf(val.toLowerCase()) > -1);
+	if (matchedTags && matchedTags.length > 0) {
+		matchedTags.forEach(m => {
+			document.getElementById(`${m}-tagc`).style.display = 'flex';
+		});
+	} else {
+		noResultsSpan.style.display = 'flex';
+	}
+	const unMatchedTags = tagInfos.filter(i => i.toLowerCase().indexOf(val.toLowerCase()) === -1);
+	unMatchedTags.forEach( m => document.getElementById(`${m}-tagc`).style.display = 'none')
 });

@@ -7,8 +7,10 @@
 	<meta name="Description" content="Web components design system.">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>Zooplus components</title>
-	<script src="./components/components.js"></script>
-	<!-- <script type="module" src="./components/components-esm.js"></script> -->
+	
+	<script src="./components/zoo-web-components.js"></script>
+	<!-- <script type="module" src="./components/zoo-web-components-esm.js"></script> -->
+	<!-- <script type="module" src="./components/esm/zoo-modules/form/checkbox/checkbox.js"></script> -->
 	<link rel="stylesheet" href="main.css">
 	<noscript>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -45,9 +47,10 @@
 		<h2>Form elements</h2>
 		<form novalidate>
 			<div class="form-content">
+				<h3>Input/Textarea</h3>
 				<zoo-input>
 					<label for="input-type-text" slot="label">Input type text</label>
-					<input id="input-type-text" slot="input" type="text" placeholder="input" required
+					<input id="input-type-text" slot="input" type="text" placeholder="Arbitrary text" required
 						pattern="[A-Za-z ]+" />
 					<span slot="info">Additional helpful information for our users</span>
 					<span slot="error">This input field should contain only letters and it is required!</span>
@@ -56,7 +59,7 @@
 					<label for="input-type-number" slot="label">Autocomplete</label>
 					<a slot="link" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist"
 						target="about:blank">Learn your HTML and don't overcomplicate</a>
-					<input id="input-type-number" slot="input" placeholder="input" list="animals" required
+					<input id="input-type-number" slot="input" placeholder="Start typing your pet type" list="animals" required
 						pattern="[Dd]og|[Cc]at|[Ss]mall [Pp]et|[Bb]ird|[Aa]quatic" />
 					<span slot="info">Possible values: Dog, Cat, Small Pet, Bird, Aquatic</span>
 					<span slot="error">This input field is required and should be one of the possible values!</span>
@@ -70,11 +73,15 @@
 				</datalist>
 				<zoo-input>
 					<label for="input-type-date" slot="label">Input type date</label>
-					<a slot="link" href="https://github.com/jcgertig/date-input-polyfill" target="about:blank">Native
-						date picker polyfill on Github</a>
 					<input id="input-type-date" slot="input" type="date" />
 					<span slot="info">Click on input to show context menu with date selection</span>
 				</zoo-input>
+				<zoo-date-range>
+					<label slot="label">Input date range</label>
+					<input slot="date-from" type="date"/>
+					<input slot="date-to" type="date"/>
+					<span slot="error">Date range is invalid! Min date is 2020-01-01 and max date is 2022-01-01</span>
+				</zoo-date-range>
 				<zoo-input>
 					<label for="input-type-email" slot="label">Input type email</label>
 					<a slot="link" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#Basic_validation" target="about:blank">Email validation</a>
@@ -85,6 +92,82 @@
 					<label for="textarea" slot="label">Textarea</label>
 					<textarea id="textarea" slot="input" placeholder="Textarea"></textarea>
 				</zoo-input>
+				<zoo-input-tag>
+					<label for="input-tag" slot="label">Tag input</label>
+					<input id="input-tag" slot="input" placeholder="Type a tag name"/>
+					<span slot="info">Start typing to see available tags. Tag filtering should be done on client side by listening on 'input' event on slotted input.</span>
+					<span slot="error">At least one tag should be selected!</span>
+					<select slot="select" multiple required>
+						<option value="Dog"></option>
+						<option value="Cat"></option>
+						<option value="Bird"></option>
+						<option value="Aquatic"></option>
+						<option value="Reptile"></option>
+					</select>
+					<zoo-input-tag-option slot="tag-option" id="dog-tag">
+						<zoo-tag slot="tag" type="tag" data-value="Dog" tabindex="0">
+							<span slot="content">Dog</span>
+						</zoo-tag>
+						<span slot="description">The domestic dog (Canis familiaris or Canis lupus familiaris)[4] is a domesticated descendant of the wolf.</span>
+					</zoo-input-tag-option>
+					<zoo-input-tag-option slot="tag-option" id="cat-tag">
+						<zoo-tag slot="tag" type="tag" data-value="Cat" tabindex="0">
+							<span slot="content">Cat</span>
+						</zoo-tag>
+						<span slot="description">The cat (Felis catus) is a domestic species of small carnivorous mammal.</span>
+					</zoo-input-tag-option>
+					<zoo-input-tag-option slot="tag-option" id="aquatic-tag">
+						<zoo-tag slot="tag" type="tag" data-value="Aquatic" tabindex="0">
+							<span slot="content">Aquatic</span>
+						</zoo-tag>
+						<span slot="description">An aquatic animal is an animal, either vertebrate or invertebrate, which lives in the water for most or all of its lifetime.</span>
+					</zoo-input-tag-option>
+					<zoo-input-tag-option slot="tag-option" id="bird-tag">
+						<zoo-tag slot="tag" type="tag" data-value="Bird" tabindex="0">
+							<span slot="content">Bird</span>
+						</zoo-tag>
+						<span slot="description">Birds are a group of warm-blooded vertebrates constituting the class Aves /ˈeɪviːz/, characterised by feathers, toothless beaked jaws, the laying of hard-shelled eggs, a high metabolic rate, a four-chambered heart, and a strong yet lightweight skeleton.</span>
+					</zoo-input-tag-option>
+					<zoo-input-tag-option slot="tag-option" id="reptile-tag">
+						<zoo-tag slot="tag" type="tag" data-value="Reptile" tabindex="0">
+							<span slot="content">Reptile</span>
+						</zoo-tag>
+						<span slot="description">Reptiles, in common parlance, are a group of tetrapods with an ectothermic ('cold-blooded') metabolism and amniotic development.</span>
+					</zoo-input-tag-option>
+					<span slot="no-results">no results</span>
+				</zoo-input-tag>
+
+				<zoo-input-tag show-tags-after-select id="input-tag-custom" data-initial-value="Cat" aria-multiselectable="true">
+					<label for="input-tag" slot="label">Tag input &amp; custom option list</label>
+					<input id="input-tag-custom-input" slot="input" placeholder="Type a tag name"/>
+					<span slot="info">Start typing to see available tags. Tag filtering should be done on client side by listening on 'input' event on slotted input.</span>
+					<span slot="error">At least one tag should be selected!</span>
+					<select slot="select" multiple required>
+						<option value="Dog"></option>
+						<option value="Cat"></option>
+						<option value="Bird"></option>
+						<option value="Aquatic"></option>
+						<option value="Reptile"></option>
+					</select>
+					<zoo-input-tag-option slot="tag-option" id="dog-tagc" tabindex="0">
+						<span slot="tag" data-value="Dog" data-option-content>🐕 Dog</span>
+					</zoo-input-tag-option>
+					<zoo-input-tag-option slot="tag-option" id="cat-tagc" tabindex="0">
+						<span slot="tag" data-value="Cat" data-option-content>🐈 Cat</span>
+					</zoo-input-tag-option>
+					<zoo-input-tag-option slot="tag-option" id="bird-tagc" tabindex="0">
+						<span slot="tag" data-value="Bird" data-option-content>🐦‍⬛ Bird</span>
+					</zoo-input-tag-option>
+					<zoo-input-tag-option slot="tag-option" id="aquatic-tagc" tabindex="0">
+						<span slot="tag" data-value="Aquatic" data-option-content>🐟 Aquatic</span>
+					</zoo-input-tag-option>
+					<zoo-input-tag-option slot="tag-option" id="reptile-tagc" tabindex="0">
+						<span slot="tag" data-value="Reptile" data-option-content>🦎 Reptile</span>
+					</zoo-input-tag-option>
+					<span slot="no-results">no results</span>
+				</zoo-input-tag>
+
+				<h3>Select</h3>
 				<zoo-select>
 					<label for="multiselect" slot="label">Multiselect</label>
 					<a slot="link" href="https://google.com" target="about:blank">Documentation link</a>
@@ -136,6 +219,7 @@
 					<span slot="legend">Searchable select legend</span>
 					<span slot="info">Search is case insensitive. Prefer to use input with a datalist.</span>
 				</zoo-searchable-select>
+				<h3>Checkbox</h3>
 				<zoo-checkbox highlighted>
 					<input id="checkbox" slot="checkbox" type="checkbox" required/>
 					<label for="checkbox" slot="label">An example checkbox with a long label message that wraps to a new
@@ -147,6 +231,7 @@
 					<input id="disabled-checkbox" slot="checkbox" type="checkbox" disabled />
 					<label for="disabled-checkbox" slot="label">Disabled checkbox</label>
 				</zoo-checkbox>
+				<h3>Radio</h3>
 				<zoo-radio>
 					<span slot="label">Radio group</span>
 					<input type="radio" id="contactChoice1" name="contact" value="email" disabled>
@@ -158,6 +243,11 @@
 					<span slot="info">Additional information</span>
 					<span slot="error">Selecting an option is a must.</span>
 				</zoo-radio>
+				<h3>Toggle switch</h3>
+				<zoo-toggle-switch>
+					<input id="input-toggle" slot="input" type="checkbox" />
+					<label for="input-toggle" slot="label">I'm not a robot</label>
+				</zoo-toggle-switch>
 			</div>
 			<zoo-button style="margin: 0 auto;">
 				<button type="submit">Submit</button>
@@ -170,7 +260,7 @@
 		<zoo-toast id="modalToast">
 			<span slot="content">Added to cart!</span>
 		</zoo-toast>
-		<h2>Buttons, modal windows</h2>
+		<h2>Buttons, button groups, modal windows</h2>
 		<div class="buttons">
 			<zoo-button id="toast-summoner">
 				<button type="button">Summon toast!</button>
@@ -200,7 +290,26 @@
 					<zoo-paw-icon title="loading paw icon"></zoo-paw-icon>
 				</button>
 			</zoo-button>
+			<zoo-button type="transparent">
+				<button type="button">Transparent type button that does nothing</button>
+			</zoo-button>
 		</div>
+		<div class="button-group">
+			<zoo-button-group active-type="primary" inactive-type="transparent">
+				<zoo-button>
+					<button type="button">Status Pending</button>
+				</zoo-button>
+
+				<zoo-button data-active>
+					<button type="button">Fulfilled</button>
+				</zoo-button>
+
+				<zoo-button>
+					<button type="button">Status Failure</button>
+				</zoo-button>
+			</zoo-button-group>
+		</div>
+
 		<zoo-modal id="modal" closelabel="close modal">
 			<span slot="header">Your basket contains licensed items</span>
 			<div>
@@ -231,6 +340,31 @@
 			</div>
 		</zoo-modal>
 		<hr>
+		<h2>Collapsable List</h2>
+		<h3>Default</h3>
+		<zoo-collapsable-list>
+			<zoo-collapsable-list-item>
+				<span slot="header">Header1</span>
+				<div slot="content">content</div>
+			</zoo-collapsable-list-item>
+			<zoo-collapsable-list-item>
+				<span slot="header">Header2</span>
+				<div slot="content">content</div>
+			</zoo-collapsable-list-item>
+		</zoo-collapsable-list>
+		<h3>Auto close turned off, border always visible, opened by default</h3>
+		<zoo-collapsable-list disable-autoclose>
+			<zoo-collapsable-list-item opened-by-default border-visible>
+				<span slot="header">Header1</span>
+				<div slot="content">content</div>
+			</zoo-collapsable-list-item>
+			<zoo-collapsable-list-item opened-by-default border-visible>
+				<span slot="header">Header2</span>
+				<div slot="content">content</div>
+			</zoo-collapsable-list-item>
+		</zoo-collapsable-list>
+
+		<hr>
 		<h2>Data grids</h2>
 		<h3>A grid with pagination, resizing, reorder and sorting.</h3>
 		<div class="grid-holder">
@@ -245,7 +379,39 @@
 				<zoo-grid-header slot="headercell" swap-title="swap icon"># of pieces</zoo-grid-header>
 				<zoo-grid-header slot="headercell" swap-title="swap icon">Price</zoo-grid-header>
 
-				<div slot="footer-content">
+				<div slot="row" class="filter-row">
+					<div></div>
+					<zoo-input>
+						<input slot="input" type="date">
+					</zoo-input>
+					<zoo-select>
+						<select slot="select">
+						  <option disabled selected>Select an option</option>
+						  <option value='delivered'>Delivered</option>
+						  <option value='ready'>Ready</option>
+						  <option value='packing'>Packing</option>
+						</select>
+					</zoo-select>
+					<zoo-input>
+						<input slot="input" type="number" placeholder="Max weight filter">
+					</zoo-input>
+					<zoo-input>
+						<input slot="input" type="date">
+					</zoo-input>
+					<zoo-input>
+						<input slot="input" type="number" placeholder="Number of pieces filter">
+					</zoo-input>
+					<zoo-input>
+						<input slot="input" type="number" placeholder="Price filter">
+					</zoo-input>
+				</div>
+				<div slot="footer-content" class="grid-footer-content">
+					<zoo-button>
+						<button type="button">Button 1</button>
+					</zoo-button>
+					<zoo-button>
+						<button type="button">Button 2</button>
+					</zoo-button>
 				</div>
 				<zoo-select labelposition="left" slot="pagesizeselector">
 					<label for="first-grid-page-size" slot="label">Page size</label>
@@ -283,6 +449,99 @@
 			</zoo-grid>
 		</div>
 
+		<h3>A grid with expandable rows</h3>
+		<div class="grid-holder">
+			<zoo-grid currentpage="3" maxpages="20" reorderable stickyheader resizable>
+				<zoo-grid-header slot="headercell" swap-title="swap icon">Valid</zoo-grid-header>
+				<zoo-grid-header slot="headercell" sortable='true' sortableproperty='createdDate' sorttitle="sort icon" swap-title="swap icon">Created Date
+				</zoo-grid-header>
+				<zoo-grid-header slot="headercell" sortable='true' sortableproperty='status' sorttitle="sort icon" swap-title="swap icon">Status</zoo-grid-header>
+				<zoo-grid-header slot="headercell" swap-title="swap icon">Max Weight</zoo-grid-header>
+				<zoo-grid-header slot="headercell" sortable='true' sortableproperty='deliveryDate' sorttitle="sort icon" swap-title="swap icon">Delivery Date
+				</zoo-grid-header>
+				<zoo-grid-header slot="headercell" swap-title="swap icon"># of pieces</zoo-grid-header>
+				<zoo-grid-header slot="headercell" swap-title="swap icon">Price</zoo-grid-header>
+				<zoo-grid-header slot="headercell">Actions</zoo-grid-header>
+
+				<zoo-grid-row slot="row">
+					<div slot="row-details">
+						<div>Valid</div>
+						<div>2020-05-10</div>
+						<div>Grid Row Expand</div>
+						<div>50kg</div>
+						<div>2020-05-10</div>
+						<div>10</div>
+						<div>15 EUR</div>
+						<div id="row-1-actions" class="actions">
+							<button type="button" class="expander">Expand</button>
+						</div>
+					</div>
+					<div id="row-1-content" slot="row-content">
+						<div>Content row 1</div>
+					</div>
+				</zoo-grid-row>
+
+				<zoo-grid-row slot="row">
+					<div slot="row-details">
+						<div>Invalid</div>
+						<div>2020-05-15</div>
+						<div>Grid Row Expand</div>
+						<div>5kg</div>
+						<div>2020-05-15</div>
+						<div>1</div>
+						<div>1 EUR</div>
+						<div id="row-2-actions" class="actions">
+							<button type="button" class="expander">Expand</button>
+						</div>
+					</div>
+					<div id="row-2-content" slot="row-content">
+						<div>Content row 2</div>
+					</div>
+				</zoo-grid-row>
+
+				<zoo-grid-row slot="row">
+					<div slot="row-details">
+						<div>Valid</div>
+						<div>2020-05-20</div>
+						<div>Grid Row Expand</div>
+						<div>5kg</div>
+						<div>2020-05-15</div>
+						<div>4</div>
+						<div>7 EUR</div>
+						<div id="row-3-actions" class="actions">
+							<button type="button" class="expander">Expand</button>
+						</div>
+					</div>
+					<div id="row-3-content" slot="row-content">
+						<div>Content row 3</div>
+					</div>
+				</zoo-grid-row>
+
+				<zoo-grid-row slot="row">
+					<div slot="row-details">
+						<div>Valid</div>
+						<div>2020-05-20</div>
+						<div>Grid Row No Expand</div>
+						<div>5kg</div>
+						<div>2020-05-15</div>
+						<div>4</div>
+						<div>7 EUR</div>
+						<div></div>
+					</div>
+				</zoo-grid-row>
+
+				<zoo-select labelposition="left" slot="pagesizeselector">
+					<label for="third-grid-page-size" slot="label">Page size</label>
+					<select id="third-grid-page-size" slot="select">
+						<option selected>5</option>
+						<option>10</option>
+						<option>25</option>
+						<option>100</option>
+					</select>
+				</zoo-select>
+			</zoo-grid>
+		</div>
+
 		<template id="simple-row">
 			<div slot="row"></div>
 		</template>
@@ -292,17 +551,6 @@
 				<input checked slot="checkbox" type="checkbox" />
 				<label slot="label">Valid</label>
 			</zoo-checkbox>
-		</template>
-
-		<template id="status-select">
-			<zoo-select>
-				<label slot="label" style="position: absolute; overflow: hidden; clip: rect(0 0 0 0); height: 1px;width: 1px;margin: -1px;padding: 0;border: 0;">Delivery status</label>
-				<select title="Delivery Status" slot="select">
-					<option>DELIVERED</option>
-					<option>READY</option>
-					<option>PACKING</option>
-				</select>
-			</zoo-select>
 		</template>
 		<script src='main.js'></script>
 	</main>
